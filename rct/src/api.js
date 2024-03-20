@@ -41,3 +41,21 @@ export const deleteCrypto = async (id) => {
     throw new Error('Failed to delete cryptocurrencies');
   }
 };
+
+export const watchCrypto = async () => {
+  try {
+    // Subscribe to changes in any cryptocurrencies record
+    pb.collection('cryptocurrencies').subscribe('*', function (e) {
+        console.log(e.action);
+        console.log(e.record);
+    }, { /* other options like expand, custom headers, etc. */ });
+
+    // Subscribe to changes only in the specified record
+    pb.collection('cryptocurrencies').subscribe('RECORD_ID', function (e) {
+        console.log(e.action);
+        console.log(e.record);
+    }, { /* other options like expand, custom headers, etc. */ });
+  } catch (error) {
+    throw new Error('Failed to watch realtime cryptocurrencies');
+  }
+}
